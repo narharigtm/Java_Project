@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  webapp:
+    build: .
+    ports:
+      - '8087:8080'
+    environment:
+      - MYSQL_DATABASE=student
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    
+
+  
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=student
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - "./main/resources:/docker-entrypoint-initdb.d"
+      - "./main/resources:/var/lib/mysql"
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - '8084:80'
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      
+
+
